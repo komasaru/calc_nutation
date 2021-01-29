@@ -30,6 +30,8 @@ Time::Time(
     std::vector<std::vector<std::string>>& l_dut) {
   try {
     this->ts      = ts;
+    this->l_ls    = l_ls;
+    this->l_dut   = l_dut;
     this->ts_tai  = {};
     this->ts_ut1  = {};
     this->ts_tt   = {};

@@ -1,8 +1,6 @@
 #ifndef CALC_NUTATION_TIME_HPP_
 #define CALC_NUTATION_TIME_HPP_
 
-#include "file.hpp"
-
 #include <cmath>
 #include <ctime>
 #include <fstream>
