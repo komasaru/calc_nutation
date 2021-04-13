@@ -26,8 +26,6 @@
                              1秒未満(9)（小数点以下9桁（ナノ秒）まで））
                  無指定なら現在(システム日時)と判断。
 ***********************************************************/
-#include "common.hpp"
-#include "file.hpp"
 #include "nutation.hpp"
 #include "time.hpp"
 
@@ -57,10 +55,6 @@ int main(int argc, char* argv[]) {
   double deps_d;       // delta-eps(deg)
   double dpsi_s;       // delta-psi(sec)
   double deps_s;       // delta-eps(sec)
-  std::vector<std::vector<std::string>> l_ls;    // List of Leap Second
-  std::vector<std::vector<std::string>> l_dut;   // List of DUT1
-  std::vector<std::vector<double>>      dat_ls;  // data of lunisolar parameters
-  std::vector<std::vector<double>>      dat_pl;  // data of planetary parameters
 
   try {
     // 地球時取得
@@ -90,22 +84,10 @@ int main(int argc, char* argv[]) {
       }
     }
 
-    // うるう秒, DUT1 一覧、
-    // lunisolra, planetary パラメータ一覧取得
-    l_ls.reserve(50);     // 予めメモリ確保
-    l_dut.reserve(250);   // 予めメモリ確保
-    dat_ls.reserve(700);  // 予めメモリ確保
-    dat_pl.reserve(700);  // 予めメモリ確保
-    ns::File o_f;
-    if (!o_f.get_leap_sec_list(l_ls)) throw;
-    if (!o_f.get_dut1_list(l_dut))    throw;
-    if (!o_f.get_param_ls(dat_ls))    throw;
-    if (!o_f.get_param_pl(dat_pl))    throw;
-
     // Calculation
-    ns::Time o_tm(tt, l_ls, l_dut);         // Object of TT
-    jcn = o_tm.calc_t();                    // ユリウス世紀数(for TT)
-    ns::Nutation o_n(jcn, dat_ls, dat_pl);  // Object of Nutation
+    ns::Time o_tm(tt);      // Object of TT
+    jcn = o_tm.calc_t();    // ユリウス世紀数(for TT)
+    ns::Nutation o_n(jcn);  // Object of Nutation
     if (!o_n.calc_nutation(dpsi, deps)) {
       std::cout << "[ERROR] Could not calculate delta-psi, "
                 << "delta-epsilon!" << std::endl;
